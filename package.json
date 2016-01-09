@@ -1,0 +1,14 @@
+{
+  "name": "typecheckjs",
+  "version": "1.1.1",
+  "description": "A simple, no-nonsense type checking library.",
+  "main": "index.js",
+  "scripts": {
+    "test": "node test.js"
+  },
+  "keywords": [
+    "type"
+  ],
+  "author": "Antarion",
+  "license": "MIT"
+}

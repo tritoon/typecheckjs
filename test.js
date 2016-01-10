@@ -81,4 +81,18 @@ assert(
 assert(type(Object).is(null) === false, 'Null is no object')
 assert(type(String).is(undefined) === false, 'Undefined is no string')
 
+assertREADME()
+
 console.log('All  tests passed!\n')
+
+function assertREADME () {
+    const file = require('fs').readFileSync('./README.md').toString()
+    const codeLines = file.split('\n')
+        .filter( line => line.substr(0,4) === '    ' && line.indexOf('=>') !== -1)
+        .map( line => {
+            let [val1, val2] = line.substr(4).split(' // => ')
+            return `assert(${val1} === ${val2})`
+        })
+        
+    eval(codeLines.join('\n'))
+}

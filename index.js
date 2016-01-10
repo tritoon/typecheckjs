@@ -4,6 +4,7 @@ const UnrecognizedError = require('./errors.js')
 const ISCHECKER = Symbol("ISCHECKER")
 
 const type = module.exports = function (requirement) {
+    if (requirement[ISCHECKER]) return prepareFn(requirement.is)
     
     //Recognized: any constructor or NaN 
     if (!isRecognized(requirement)) throwUnrecognized(requirement)
@@ -32,11 +33,11 @@ const type = module.exports = function (requirement) {
                 
             } else if (requirement === Array) {
                 testFn = Array.isArray
-                ofFn = arrayOf
+                ofFn = constructOf(Array)
                 
             } else {
                 testFn = x => x instanceof requirement 
-                ofFn = objectOf
+                ofFn = constructOf(Object)
             }
     }
     
@@ -50,31 +51,25 @@ function prepareFn (testFn, ofFn) {
         of: ofFn || throwUnrecognizedOf,
         
         or (newReq) {
-            return prepareFn(x => testFn(x) || type(newReq).is(x))
+            return prepareFn(x => testFn(x) || normalizeTestFn(newReq)(x))
         }
     }
 }
 
-function arrayOf (requirement) {
-    const testFn = normalizeTestFn(requirement)
+function constructOf(arrOrObj) {
+    return requirement => {
+        const testFn = normalizeTestFn(requirement)
     
-    return {is: x => {
-        if (!type(Array).is(x)) return false
-        
-        return Object.keys(x)
-            .reduce((acc, key) => acc && testFn(x[key], key), true)
-    }}
-}
-
-function objectOf (requirement) {
-    const testFn = normalizeTestFn(requirement)
-    
-    return {is: x => {
-        if (!type(Object).is(x)) return false
-        
-        return Object.keys(x)
-            .reduce((acc, key) => acc && testFn(x[key], key), true)
-    }}
+        return {
+            [ISCHECKER]: true,
+            is: x => {
+                if (!type(arrOrObj).is(x)) return false
+                
+                return Object.keys(x)
+                    .reduce((acc, key) => acc && testFn(x[key], key), true)
+            }
+        }
+    }
 }
 
 function normalizeTestFn (requirement) {
@@ -100,10 +95,10 @@ function isRecognized (requirement) {
     return typeof requirement === 'function' || isNaN(requirement)
 }
 
-function throwUnrecognized (requirement) {
-    throw new UnrecognizedError(`Unrecognized requirement ${requirement}`)
+function throwUnrecognized () {
+    throw new UnrecognizedError(`Unrecognized requirement`)
 }
 
-function throwUnrecognizedOf (requirement) {
-    throw new UnrecognizedError(`This type ${requirement} does not support 'of' queries`)
+function throwUnrecognizedOf () {
+    throw new UnrecognizedError(`This type does not support 'of' queries`)
 }

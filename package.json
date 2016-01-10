@@ -2,9 +2,10 @@
   "name": "typecheckjs",
   "version": "1.1.1",
   "description": "A simple, no-nonsense type checking library.",
+  "repository": "https://github.com/tritoon/typecheckjs.git",
   "main": "index.js",
   "scripts": {
-    "test": "node test.js"
+    "test": "node --harmony_destructuring test.js"
   },
   "keywords": [
     "type"

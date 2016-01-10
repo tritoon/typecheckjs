@@ -8,7 +8,7 @@
     "test": "node --harmony_destructuring test.js"
   },
   "keywords": [
-    "type"
+    "type", "checking", "code safety"
   ],
   "author": "Antarion",
   "license": "MIT"

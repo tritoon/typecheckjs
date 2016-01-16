@@ -1,7 +1,5 @@
-First, install this module: `const type = require('typecheckjs')`
-
-This will give you a type() function which you can use like this:
-
+    const type = require('typecheckjs')
+    
     /*
      * Simple type checking is as follows
      */

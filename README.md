@@ -1,54 +1,66 @@
+The easiest and most powerful type checking node.js package yet!
+Did I mention it has powerful [plugin support](#plugins)?
+
+### Installation
+
+    npm i --save typecheckjs
+
+### Usage
+
+The core plugin will recognize `NaN`, `String`, `Number`, `Boolean`, 
+`Function`, `Array`, `Object`, and every constructor function (like `Date`).
+Use it like this:
+
     const type = require('typecheckjs')
     
-    /*
-     * Simple type checking is as follows
-     */
+    type(Number).is(1) // true
+    type(String).is(1) // true
     
-    type(String).is('abc') // => true
-    type(String).is(1) // => false
-    type(Number).is('abc') // => false
+    type(Date).is(new Date()) // true
     
-    //NaN
-    type(Number).is(NaN) // => true
-    type(NaN).is(NaN) // => true
+    type(Number).is(NaN) // true
+    type(NaN).is(NaN)    // true
+    type(NaN).is(1)      // false
     
-    //You can also pass in: Boolean, Function
-    type(Boolean).is(false) // => true
-    type(Function).is(x => x+3) // => true
+If you want to accept multiple types, you can do so:
     
-    //This also works for Arrays and Objects
-    type(Array).is([]) // => true
-    type(Object).is(new Date()) // => true
+    type(Number).or(String).is(1)    // true
+    type(Number).or(String).is('a')  // true
+    type(Number).or(String).is(true) // false
     
-    //If given a constructor, it checks with 'instanceof'
-    type(Date).is(new Date()) // => true
+It is also possible to check the contents of an array or object:
+
+    type(Array).of(Number).is([1,2,3]) // true
+    type(Array).of(Number).is([1,'a']) // false
     
-    /*
-     * What if your function accepts either a String or a Number???
-     */
+    type(Object).of(Number).is({a:1}) // true
     
-    type(String).or(Number).is('abc') // => true
-    type(String).or(Number).is(1) // => true
+    type(Object).of({a: Number, b: String}).is({a: 1, b: 'b'}) //true
+    type(Array).of([Number, String]).is([1, 'a']) // true
     
-    /*
-     * Want to check the contents of an Array or Object?
-     */
+Check the tests in the repo for more info: [link][1] 
+
+
+### Plugins
+
+`typecheckjs` contains a well-crafted plugin system 
+that enables developers with specific needs to
+easily code for type safety.
+
+To use it in your code, first import the library and the plugins 
+you would like to use. Then configure `typecheckjs` to make use of them:
+
+    const Immutable = require('immutable')
+    const Type = require('typecheckjs')
+    const immutableplugin = require('typecheckjsimmutable') // In development
     
-    type(Object).of(String).is({a: 'a'}) // => true
-    type(Array).of(Number).is([1,2,3]) // => true
-    
-    //Or make sure that specific values are of a certain type
-    type(Object).of({a:String}).is({a:'a'}) // => true
-    type(Array).of([String, Number]).is(['a', 1]) // => true
-    
-    //If you don't specify a specific field, it will be ignored
-    type(Object).of({a:String}).is({a:'a', b:1}) // => true
-    
-    //For a more advanced check in type().of,
-    //just pass in the result of a type().of or type().or call
-    type(Object).of( type(String).or(Number) ).is({a:1, b:'b'}) // => true
-    type(Array).of( type(Array).of(Number) ).is([[1,2],[3,4]]) // => true
-    
-    //This goes for type.or() as well
-    type( type(Array).of(String) ).or( type(Object).of(String) ).is({a:'a'}) // => true
-    type( type(Array).of(String) ).or( type(Object).of(String) ).is(['a']) // => true
+    const type = Type.withPlugins([immutableplugin])
+
+Now you can use whatever tests this plugin provides, for example:
+
+    let map = Immutable.Map({a: 10})
+    type(Immutable.Map).of(Number).is(map) // true
+
+<!-- Location of test files -->
+
+[1]: ./lib/test/test.js 

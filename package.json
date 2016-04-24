@@ -5,19 +5,20 @@
   "repository": "https://github.com/tritoon/typecheckjs.git",
   "main": "index.js",
   "scripts": {
-    "test": "node --harmony_destructuring lib/test/test.js",
-    "build": "./build.sh"
+    "test": "node --harmony_destructuring test/test.js",
+    "build": "babel --watch './lib' --out-dir './build'"
   },
   "author": "Antarion",
   "license": "MIT",
-  "tonicExampleFilename": "README.md",
   "keywords": [
-    "type",
-    "checking",
-    "code safety"
+    "type checking",
+    "code safety",
+    "extendable",
+    "plugins"
   ],
   "devDependencies": {
     "babel-cli": "^6.4.0",
+    "babel-plugin-transform-object-rest-spread": "^6.3.13",
     "babel-preset-es2015": "^6.3.13"
   }
 }

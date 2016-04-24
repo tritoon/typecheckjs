@@ -1,1 +1,1 @@
-module.exports = require('./lib/build/')
+module.exports = require(__dirname + '/build/').default

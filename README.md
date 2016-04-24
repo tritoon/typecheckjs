@@ -61,4 +61,4 @@ Now you can use whatever tests this plugin provides, for example:
     let map = Immutable.Map({a: 10})
     type(Immutable.Map).of(Number).is(map) // true
     
-To develop a plugin, refer to [pluginsguide.md]()
+To develop a plugin, refer to [pluginsguide.md](./pluginsguide.md)

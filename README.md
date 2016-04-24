@@ -38,7 +38,7 @@ It is also possible to check the contents of an array or object:
     type(Object).of({a: Number, b: String}).is({a: 1, b: 'b'}) //true
     type(Array).of([Number, String]).is([1, 'a']) // true
     
-Check the tests in the repo for more info: [link][1] 
+Check the tests in the repo for more info: [link](./test/test.js)
 
 
 ### Plugins
@@ -60,7 +60,5 @@ Now you can use whatever tests this plugin provides, for example:
 
     let map = Immutable.Map({a: 10})
     type(Immutable.Map).of(Number).is(map) // true
-
-<!-- Location of test files -->
-
-[1]: ./lib/test/test.js 
+    
+To develop a plugin, refer to [pluginsguide.md]()

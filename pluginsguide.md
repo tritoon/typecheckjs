@@ -35,7 +35,7 @@ properties to the object:
     the `typecheckjs` package yourself!
     
  -  `this.makeChecker(object)`: a function which adds a specific tag to your
-    object in order to support more complex test cases like <br>
+    object in order to support more complex test cases like
     `type(Object).of( type(Array).of(String) ).is( {a: ['a', 'b']} )`
 
     Be sure to include a `is` method in the object you pass in, because that is 
@@ -51,7 +51,7 @@ properties to the object:
     an array have the characteristics your module has specified (by using 
     the `.is()` method you implemented).
 
-Should you need any help, just read the core plugins' [code][1] as an example
+Should you need any help, just read the core plugins' [code][1] as an example.
 Happy coding!
 
 [1]: ./lib/core.js
